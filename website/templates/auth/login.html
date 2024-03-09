@@ -1,0 +1,32 @@
+{% extends "index.html" %}
+{% block content %}
+<section class="container-lg my-auto d-flex justify-content-center align-items-center position-relative">
+    <div class="bg-light row shadow rounded-4">
+        <h1 class="fs-3 py-4 m-0 text-center">Login</h1>
+        <form method="post" class="p-5 pt-0">
+            <div class="row p-2 py-1">
+                <div style="width: 350px;" class="col">
+                    <label for="email" class="visually-hidden">Email Address</label>
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Email Address">
+                </div>
+            </div>
+            <div class="row p-2 py-1">
+                <div class="col">
+                    <label for="password" class="visually-hidden">Password</label>
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                </div>
+            </div>
+            <div class="row px-2 py-4">
+                <div class="col">
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                </div>
+            </div>
+            <div class="row px-2 pb-1 text-center">
+                <div class="col">
+                    Don't have an account? <a href="/signup">Sign up</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "index.html" %}
+{% block content %}
+<section class="container-lg my-auto d-flex justify-content-center align-items-center position-relative">
+    <div class="bg-light row shadow rounded-4">
+        <h1 class="fs-3 py-4 m-0 text-center">Create Post</h1>
+        <form method="post" class="p-5 pt-0">
+            <div class="row p-2 py-1">
+                <div style="width: 350px;" class="col">
+                    <textarea class="form-control" name="text" id="text" rows="8" placeholder="Type what you have on mind." style="resize: none"></textarea>
+                </div>
+            </div>
+            <div class="row px-2 py-4">
+                <div class="col">
+                    <button type="submit" class="btn btn-primary w-100">Publish</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

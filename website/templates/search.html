@@ -1,0 +1,44 @@
+{% extends "index.html" %}
+{% block content %}
+<section class="container-lg d-flex flex-lg-row flex-column-reverse justify-content-center align-items-center align-items-lg-start gap-4 mb-4">
+    <div class="d-flex flex-row gap-4">
+        <div class="d-flex flex-column gap-2">
+            {% for users in users %}
+                {% if user.id != users.id %}
+                <div class="d-flex align-items-center gap-2 pt-1 hover-underline">
+                    <a href="/{{ users.username }}" class="rounded-circle">
+                        <img src="../static/profile_images/{{ users.profile_img }}" alt="profile" class="rounded-circle" style="width: 32px; height: 32px;"></img>
+                    </a>
+                    <div class="flex-grow-1">
+                        <a href="/{{ users.username }}" class="text-decoration-none text-black">{{ users.first_name }} {{ users.last_name }}</a>
+                    </div>
+                    {% set follow = {'status': 'Follow'} %}
+                    {% for followed in user.followed %}
+                        {% if followed.followed.id == users.id %}
+                            {% if follow.update({'status': 'Unfollow'}) %}{% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    <a onclick="followUser('{{ users.username }}')" id="follow-button-{{ users.username }}" role="button"
+                        class="text-decoration-none">{{ follow.status }}</a>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="d-flex flex-column justify-content-center gap-3">
+        {% for post in posts %}
+            <a href="http:/\/127.0.0.1:5000/p/{{post.url}}" class="text-decoration-none text-black">
+            <div class="card d-flex profile-cards position-relative" style="width: 16rem;height: 14rem">
+                <div class="card-body hoverDimmed">
+                <p class="card-text">{{post.data}}</p>
+                </div>
+                <div class="hoverOptions position-absolute top-50 start-50 translate-middle d-flex flex-row gap-4 invisible">
+                    <span><i class="bi bi-heart-fill" style="font-size: 95%"></i> {{post.likes|selectattr("comment_id", "none")|list|length}}</span>
+                    <span><i class="bi bi-chat-fill"></i> {{post.comments|length}}</span>
+                </div>
+            </div>
+            </a>
+        {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
