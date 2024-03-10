@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, abort, current_app, redirect, jsonify
+from flask import Blueprint, render_template, request, flash, abort, current_app, redirect, jsonify, url_for
 from flask_login import login_required, current_user
 from . import db
 from .models import User, Post, Follow, Notification
@@ -57,7 +57,7 @@ def UploadProfileImage():
             user.profile_img = image_name
             db.session.commit()
             flash("Profile picture changed!", category="success")
-    return redirect('/' + current_user.username + '/', code=302, Response=None)
+    return redirect(url_for("profile.open_profile", username=current_user.username))
 
 
 # TODO: Implement better way of unchecking notifications

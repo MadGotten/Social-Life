@@ -20,7 +20,7 @@ def create_post():
             current_user.notify_followers()
             db.session.commit()
             flash('Post has been published!', category='success')
-            return redirect('/', code=302, Response=None)
+            return redirect(url_for("main"))
         else:
             flash("Email or password cannot be empty!", "error")
     return render_template('create_post.html', user=current_user)
@@ -37,7 +37,7 @@ def create_comment(post_id):
             db.session.add(new_comment)
             db.session.commit()
             flash("Comment published successfully!", category="success")
-        return redirect('/p/' + post_url + '/', code=302, Response=None)
+        return redirect(url_for('posts.open_post', post_url=post_url))
     return abort(405)
 
 
@@ -108,5 +108,5 @@ def delete_post(id):
             db.session.commit()
             flash("Post was deleted", category="success")
 
-        return redirect('/', code=302, Response=None)
+        return redirect(url_for("main"))
     return abort(405)
