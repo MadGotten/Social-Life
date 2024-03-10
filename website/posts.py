@@ -55,7 +55,7 @@ def open_post(post_url):
 @login_required
 def like_post(post_id):
     post = Post.query.filter_by(id=post_id).first()
-    like = Like.query.filter_by(user_id=current_user.id, post_id=post_id, comment_id=None).first()
+    like = Like.query.filter_by(user_id=current_user.id, post_id=post_id).first()
 
     if not post:
         flash('Post does not exist', category="error")
@@ -67,15 +67,7 @@ def like_post(post_id):
         db.session.add(like)
         db.session.commit()
 
-    likes = 0
-    liked = False
-    for post_likes in post.likes:
-        if post_likes.comment_id is None:
-            likes += 1
-            if not liked and post_likes.user_id == current_user.id:
-                liked = True
-
-    return jsonify({"likes": likes, "liked": liked})
+    return jsonify({"likes": len(post.likes), "liked": current_user.id in map(lambda x: x.user_id, post.likes)})
 
 
 @posts.route('/like_comment/<comment_id>/', methods=["POST"])
@@ -109,4 +101,17 @@ def delete_post(id):
             flash("Post was deleted", category="success")
 
         return redirect(url_for("main"))
+    return abort(405)
+
+@posts.route('/delete_comment/<id>', methods=["POST"])
+@login_required
+def delete_comment(id):
+    comment = Comment.query.get(id)
+    if comment:
+        if comment.user_id == current_user.id:
+            db.session.delete(comment)
+            db.session.commit()
+            flash("Comment was deleted", category="success")
+
+        return redirect(url_for('posts.open_post', post_url=request.form["post_url"]))
     return abort(405)
