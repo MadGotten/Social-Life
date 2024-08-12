@@ -7,3 +7,4 @@ migrations/versions/__pycache__
 
 website/__pycache__
 website/static/profile_images/*
+!website/static/profile_images/default.png
