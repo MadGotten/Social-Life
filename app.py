@@ -7,26 +7,19 @@ ROWS_PER_PAGE = 5
 
 app = create_app()
 
-
 # TODO: refactor methods to have CRUD methodology
 # TODO: add algorithm for displaying posts based on user followers, create date and others
+@app.route('/')
 @login_required
-def home():
+def main():
     page = request.args.get('page', type=int)
     posts = Post.query.order_by(Post.id.desc()).paginate(page=page, per_page=ROWS_PER_PAGE)
     users = User.query.filter(User.id != current_user.id).limit(4).all()
-    if page is not None:
-        return render_template("post.html", user=current_user, posts=posts, current_page=page)
-    else:
+    
+    if page is None:
         return render_template("main.html", user=current_user, posts=posts, users=users, current_page=page)
-
-
-@app.route('/')
-def main():
-    if current_user.is_authenticated:
-        return home()
-    else:
-        return redirect(url_for('auth.login'))
+    
+    return render_template("post.html", user=current_user, posts=posts, current_page=page)
 
 
 @app.route('/search', methods=["GET"])
