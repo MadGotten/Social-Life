@@ -121,13 +121,13 @@
 {%- for page in posts.iter_pages() %}
     {% if page %}
         {% if page != posts.page %}
-            {% if page == posts.next_num %} {# Checks if there's next page to load #}
+            {% if page == posts.next_num %}
                 <div id="load_more">
                     <div hx-get="/?page={{page}}" hx-target="#load_more" hx-trigger="revealed" hx-swap="outerHTML"></div>
                 </div>
             {% endif %}
         {%else %}
-            {% if posts.pages == posts.page %} {# Checks for last loop iteration #}
+            {% if posts.pages == posts.page %}
                 <p class="text-center my-4">We are sorry we couldn't load more posts</p>
             {% endif %}
         {% endif %}
