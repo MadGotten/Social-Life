@@ -1,0 +1,53 @@
+html,
+body {
+    min-height: 100vh;
+    overflow: auto;
+}
+body {
+    padding-top: 88px;
+}
+.custom-control-input-bg > textarea:focus{
+    background-color: #F5F5F5 !important;
+}
+.dropdown-item-danger {
+    color: var(--bs-red);
+}
+.dropdown-item-danger:hover,
+.dropdown-item-danger:focus {
+    color: #fff;
+    background-color: var(--bs-red);
+}
+.hover-underline > a:hover{
+    text-decoration: underline;
+}
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+}
+.hide-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.hoverDimmed:hover {
+    background-color: #e5e5e5;
+    opacity: 0.5;
+}
+.profile-cards:hover .hoverOptions{
+    color: black;
+    visibility: visible !important;
+}
+.uploadpicture:hover {
+    filter:brightness(70%);
+}
+.uploadpicture:hover .bi-cloud-arrow-up {
+    filter:brightness(1);
+    display: block !important;
+}
+@media (min-width: 992px) {
+.position-lg-fixed {
+    position: fixed !important;
+}
+.w-lg-300 {
+    width: 300px !important;
+}
+}
+.bg-mainbody { background-color: #F5F5F5; }
