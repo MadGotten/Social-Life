@@ -2,7 +2,7 @@ from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 from sqlalchemy import event
-import datetime
+from datetime import datetime, timezone, timedelta
 
 
 # TODO: Do some cleanup with database
@@ -22,24 +22,26 @@ class User(db.Model, UserMixin):
     followers = db.relationship('Follow', foreign_keys='Follow.followed_id',
                                 backref=db.backref('followed', lazy='joined'), lazy='dynamic',
                                 cascade='all, delete-orphan')
-    notification = db.relationship('Notification', backref='user')
+    notification = db.relationship('Notification', backref='user', lazy=True)
 
     def is_following(self, user):
-        if user.id is None:
-            return False
         return self.followed.filter_by(followed_id=user.id).first() is not None
 
     def follow(self, user):
         if not self.is_following(user):
-            f = Follow(followed=user, follower=self)
-            db.session.add(f)
+            follow = Follow(followed=user, follower=self)
+            db.session.add(follow)
+            db.session.commit()
             return True
+        return False
 
     def unfollow(self, user):
-        f = self.followed.filter_by(followed_id=user.id).first()
-        if f:
-            db.session.delete(f)
+        follow = self.followed.filter_by(followed_id=user.id).first()
+        if follow:
+            db.session.delete(follow)
+            db.session.commit()
             return True
+        return False
 
     def notify_followers(self):
         followers = self.followers.with_entities(Follow.followed_id, Follow.follower_id).all()
@@ -78,12 +80,13 @@ class Like(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('post.id', ondelete="CASCADE"), nullable=False)
     comment_id = db.Column(db.Integer, db.ForeignKey('comment.id', ondelete="CASCADE"))
 
-# TODO: Implement notification creating on insert in tables Follow
+
 class Follow(db.Model):
     follower_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     followed_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     date = db.Column(db.DateTime(timezone=True), default=func.now())
-    
+
+
 @event.listens_for(Follow, 'after_insert')
 def create_notification_on_follow(mapper, connection, follow):
     notification_object = Notification_object(entity_type=3, entity_id=follow.follower_id)
@@ -102,7 +105,7 @@ class Notification(db.Model):
 
     @staticmethod
     def delete_expired_notifications():
-        expiration_date = datetime.datetime.utcnow() - datetime.timedelta(days=3)
+        expiration_date = datetime.now(timezone.utc) - timedelta(days=3)
         expired_notifications = Notification.query.filter(Notification.date <= expiration_date).all()
         for notification in expired_notifications:
             db.session.delete(notification)

@@ -25,14 +25,11 @@ def open_profile(username):
 def follow_user(username):
     user = User.query.filter_by(username=username).first()
     if user:
-        # follower = Follow.query.filter_by(followed_id=current_user.id, follower_id=user.id).first()
         if current_user.is_following(user):
             current_user.unfollow(user)
-            db.session.commit()
             return jsonify({"followed": False})
         elif not current_user.is_following(user):
             current_user.follow(user)
-            db.session.commit()
             return jsonify({"followed": True})
     flash('User does not exist', category="error")
 
@@ -46,13 +43,12 @@ def UploadProfileImage():
         if image:
             if current_user.profile_img != "default.png":
                 try:
-                    os.remove(os.path.join(current_app.config['UPLOAD_PROFILE_FOLDER'],
-                                           current_user.profile_img))  # Removing image from disc
+                    os.remove(os.path.join(current_app.config['UPLOAD_PROFILE_FOLDER'], current_user.profile_img))  # Removing image from disk
                 except:
                     pass
             image_filename = secure_filename(image.filename)
             image_name = str(uuid.uuid1()) + "_" + image_filename  # Genereting uuid for image
-            image.save(os.path.join(current_app.config['UPLOAD_PROFILE_FOLDER'], image_name))  # Saving image to disc
+            image.save(os.path.join(current_app.config['UPLOAD_PROFILE_FOLDER'], image_name))  # Saving image to disk
             user = User.query.filter_by(id=current_user.id).first()
             user.profile_img = image_name
             db.session.commit()
