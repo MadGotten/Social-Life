@@ -1,5 +1,5 @@
 <nav class="navbar fixed-top bg-primary fw-normal flex-row flex-nowrap flex justify-content-center">
-    <div class="container-lg d-flex mx-4">
+    <div class="container-lg d-flex mx-1 mx-sm-4">
         <div class="d-flex flex-row align-items-center">
             <a class="navbar-brand text-white fs-5" href="/">Social Life</a>
             <form method="GET" action="/search">
@@ -9,7 +9,7 @@
             </form>
 
         </div>
-        <div class="d-flex flex-row mx-2">
+        <div class="d-flex flex-row mx-1 mx-sm-2">
             {% if user.is_authenticated %}
             <div class="nav-link px-2 px-sm-3 py-sm-2 active text-white dropdown">
                 <a class="position-relative text-white" role="button" data-bs-toggle="dropdown" onclick="checkNotifications()" aria-expanded="false" style="width: 20px; height:20px;">

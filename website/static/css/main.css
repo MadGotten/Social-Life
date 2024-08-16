@@ -42,16 +42,16 @@ body {
     filter:brightness(1);
     display: block !important;
 }
-@media (min-width: 992px) {
-.position-lg-fixed {
-    position: fixed !important;
-}
-.w-lg-300 {
-    width: 300px !important;
-}
-}
 .bg-mainbody { background-color: #F5F5F5; }
 
+@media (min-width: 992px) {
+    .position-lg-fixed {
+        position: fixed !important;
+    }
+    .w-lg-300 {
+        width: 300px !important;
+    }
+}
 
 @media (max-width: 768px) {
     #profileimageform {
@@ -64,5 +64,12 @@ body {
     #profileimageform {
         width: 80px !important;
         height: 80px !important;
+    }
+}
+
+
+@media (min-width: 576px) {
+    .dropdown-menu-end {
+        width: 300px !important;
     }
 }
