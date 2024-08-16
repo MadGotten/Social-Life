@@ -3,6 +3,7 @@
 <section class="container-lg d-flex flex-column flex-grow-1 justify-content-start align-items-center gap-2 mb-4">
     <div class="w-75 d-flex flex-row gap-4 py-3 mb-2">
         <form method="post" action="/UploadProfileImage" style="height: 150px;position:relative;" enctype="multipart/form-data">
+            {{ csrf_form.hidden_tag() }}
             {% if profile.id == user.id %}
                 <label for="profileimage" class="rounded-circle overflow-hidden uploadpicture" style="cursor:pointer;">
                         <i class="bi bi-cloud-arrow-up position-absolute top-50 start-50 translate-middle text-white fs-1 d-none" style="z-index:999"></i>

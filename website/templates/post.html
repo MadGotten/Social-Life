@@ -37,6 +37,7 @@
                         Do you really want to delete the post?
                     </div>
                     <form method="POST" action="/delete_post/{{ post.id }}">
+                        {{ csrf_form.hidden_tag() }}
                       <div class="modal-footer-{{ post.id }} p-2">
                           <a class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
                           <button class="btn btn-danger" type="submit">Delete</button>
@@ -95,6 +96,7 @@
     </div>
     <p class="card-text px-3"><small class="text-muted">{{moment(post.date).fromNow()}}</small></p>
     <form method="post" action="/create_comment/{{post.id}}">
+        {{ csrf_form.hidden_tag() }}
         <div class="card-footer p-0 ps-2 d-flex justify-content-between align-items-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-chat" viewBox="0 0 16 16">
                 <path d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 

@@ -1,0 +1,16 @@
+{% macro render_field(field) %}
+<div class="row p-2 py-1">
+    <div class="col">
+    {{ field.label(class_="visually-hidden") }}
+    {{ field(class_="form-control " + ("border-danger" if field.errors else "")) }}
+
+    {% if field.errors %}
+        <ul class="list-unstyled m-0">
+        {% for error in field.errors %}
+            <li class="text-danger">{{ error }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    </div>
+</div>
+{% endmacro %}
