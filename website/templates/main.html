@@ -1,9 +1,9 @@
 {% extends "index.html" %}
 {% block content %}
 <section class="container-lg d-flex flex-lg-row flex-column-reverse justify-content-center align-items-center align-items-lg-start gap-4 mb-4">
-    <div class="d-flex flex-column gap-5">
+    <div class="d-flex flex-column gap-5" style="max-width: 340px; min-width: 260px ;width: 100%">
         {% if posts.pages == 0 %}
-        <div class="card" style="width: 400px;height:300px;">
+        <div class="card w-100" style="height:300px;">
             <div class="card-header py-2 d-flex justify-content-between">
                 <img src="../static/profile_images/default.png" alt="profile" class="rounded-circle" style="width: 32px; height: 32px;"></img>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots align-self-center" viewBox="0 0 16 16">
