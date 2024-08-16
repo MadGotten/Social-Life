@@ -2,19 +2,19 @@
 {% block content %}
 <section class="container-lg d-flex flex-column flex-grow-1 justify-content-start align-items-center gap-2 mb-4">
     <div class="w-75 d-flex flex-row gap-4 py-3 mb-2">
-        <form method="post" action="/UploadProfileImage" style="height: 150px;position:relative;" enctype="multipart/form-data">
+        <form method="post" action="/UploadProfileImage" id="profileimageform" style="min-width: 80px; width: 150px;height: 150px;position:relative;" enctype="multipart/form-data">
             {{ csrf_form.hidden_tag() }}
             {% if profile.id == user.id %}
-                <label for="profileimage" class="rounded-circle overflow-hidden uploadpicture" style="cursor:pointer;">
-                        <i class="bi bi-cloud-arrow-up position-absolute top-50 start-50 translate-middle text-white fs-1 d-none" style="z-index:999"></i>
-                        <input type="file" name="profileimage" onchange="this.form.submit()" id="profileimage" style="display: none"/>
-                        <img src="../static/profile_images/{{profile.profile_img}}" alt="profile" style="width: 150px; height: 150px;"></img>
+                <label for="profileimage" class="rounded-circle overflow-hidden uploadpicture w-100 h-100" style="cursor:pointer;">
+                    <i class="bi bi-cloud-arrow-up position-absolute top-50 start-50 translate-middle text-white fs-1 d-none" style="z-index:999"></i>
+                    <input type="file" name="profileimage" onchange="this.form.submit()" id="profileimageinput" style="display: none"/>
+                    <img src="../static/profile_images/{{profile.profile_img}}" alt="profile" style="max-width: 100%"></img>
                 </label>
             {% else %}
-                <img src="../static/profile_images/{{profile.profile_img}}" alt="profile" class="rounded-circle" style="width: 150px; height: 150px;"></img>
+                <img src="../static/profile_images/{{profile.profile_img}}" alt="profile" class="rounded-circle w-100 h-100"></img>
             {% endif %}
         </form>
-        <div class="d-flex flex-column ms-4 p-3">
+        <div class="d-flex flex-column ms-1 ms-sm-2 p-sm-2 ms-md-4 p-md-3">
                 <h4>{{profile.first_name}} {{profile.last_name}}</h4>
                 <h5 class="fw-normal">{{profile.username}}</h5>
                 {% for followed in profile.followed %}
@@ -45,7 +45,7 @@
     </div>
     <div class="d-flex flex-wrap justify-content-center gap-3">
     {% for post in posts %}
-        <a href="http:/\/127.0.0.1:5000/p/{{post.url}}" class="text-decoration-none text-black">
+        <a href={{ url_for('posts.open_post', post_url=post.url) }} class="text-decoration-none text-black">
         <div class="card d-flex profile-cards position-relative" style="width: 16rem;height: 14rem">
             <div class="card-body hoverDimmed">
             <p class="card-text">{{post.data}}</p>

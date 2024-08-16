@@ -2,8 +2,8 @@
 <div class="card" style="height:500px">
     <div class="card-header p-0 d-flex justify-content-between align-items-center">
         <div class="d-flex px-3 py-2 flex-row align-items-center gap-2">
-            <a href="/{{post.user.username}}" class="rounded-circle">
-                <img src="../static/profile_images/{{post.user.profile_img}}" alt="profile" class="rounded-circle" style="width: 32px; height: 32px;"></img>
+            <a href="/{{post.user.username}}" class="rounded-circle overflow-hidden" style="width: 32px; height: 32px">
+                <img src="../static/profile_images/{{post.user.profile_img}}" alt="profile" style="max-width: 100%"></img>
             </a>
             <a href="/{{post.user.username}}" class="text-decoration-none text-black">
                 <div>{{post.user.first_name}} {{post.user.last_name}}</div>
@@ -19,7 +19,7 @@
             </button>
             <ul class="dropdown-menu p-2 gap-1">
                 <li><a class="dropdown-item rounded-3">Report</a></li>
-                <li><a class="dropdown-item rounded-3" onclick="copyClipboard('http:/\/127.0.0.1:5000/p/{{post.url}}')">Copy link</a></li>
+                <li><a class="dropdown-item rounded-3" onclick="copyClipboard('{{ url_for('posts.open_post', post_url=post.url, _external=True) }}')">Copy link</a></li>
                 {% if post.user_id == user.id %}
                     <li><hr class="dropdown-divider my-1"></li>
                     <li><a class="dropdown-item dropdown-item-danger rounded-3" data-bs-toggle="modal" data-bs-target="#confirmDelete-{{ post.id }}">Delete</a></li>
@@ -56,8 +56,8 @@
         {% for comment in post.comments %}
             {% if loop.index0 < 2 %}
                 <div class="d-flex flex-row gap-3 lh-sm">
-                    <a href="/{{comment.user.username}}" class="rounded-circle">
-                        <img src="/static/profile_images/{{comment.user.profile_img}}" alt="profile" class="rounded-circle" style="width: 32px; height: 32px;"></img>
+                    <a href="/{{comment.user.username}}" class="rounded-circle overflow-hidden" style="width: 32px; height: 32px;">
+                        <img src="/static/profile_images/{{comment.user.profile_img}}" alt="profile" style="max-width: 100%"></img>
                     </a>
                     <div class="d-flex flex-column align-items-start gap-1 flex-grow-1">
                         <div>
@@ -91,7 +91,7 @@
                 </a>
             </div>
             <span id="likes-post-count-{{post.id}}" class="fw-medium mb-2">Post likes: {{post.likes|selectattr("comment_id", "none")|list|length}}</span>
-                <a href="http:/\/127.0.0.1:5000/p/{{post.url}}" class="text-decoration-none text-muted" >Show all comments: {{post.comments|length}}</a>
+                <a href={{ url_for('posts.open_post', post_url=post.url) }} class="text-decoration-none text-muted" >Show all comments: {{post.comments|length}}</a>
         </div>
     </div>
     <p class="card-text px-3"><small class="text-muted">{{moment(post.date).fromNow()}}</small></p>

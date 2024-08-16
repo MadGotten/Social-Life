@@ -10,7 +10,7 @@
             {% for object in notifications.notification_object %}
                 {% if object.entity_type == 1 %}
                     <li>
-                        <a class="dropdown-item" style="font-size:90%" href="http://127.0.0.1:5000/{{object.entity.username}}/">
+                        <a class="dropdown-item" style="font-size:90%" href={{ url_for('profile.open_profile', username=object.entity.username) }}>
                             User <b>{{object.entity.username}}</b> has added a new post
                             <p class="text-secondary mb-0 mt-1 text-end" style="font-size:80%">{{moment(notifications.date).fromNow()}}</p>
                         </a>
@@ -42,7 +42,7 @@
             {% for object in notifications.notification_object %}
                 {% if object.entity_type == 1 %}
                     <li>
-                        <a class="dropdown-item" style="font-size:90%" href="http://127.0.0.1:5000/{{object.entity.username}}/">
+                        <a class="dropdown-item" style="font-size:90%" href={{ url_for('profile.open_profile', username=object.entity.username) }}>
                             User <b>{{object.entity.username}}</b> has added a new post
                             <p class="text-secondary mb-0 mt-1 text-end" style="font-size:80%">{{moment(notifications.date).fromNow()}}</p>
                         </a>

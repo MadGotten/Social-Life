@@ -4,7 +4,7 @@
     <div class="d-flex flex-column-reverse flex-sm-row gap-4">
         <div class="d-flex flex-column justify-content-center gap-3">
             {% for post in posts %}
-                <a href="http:/\/127.0.0.1:5000/p/{{post.url}}" class="text-decoration-none text-black">
+                <a href={{ url_for('posts.open_post', post_url=post.url) }} class="text-decoration-none text-black">
                 <div class="card d-flex profile-cards position-relative" style="width: 16rem;height: 14rem">
                     <div class="card-body hoverDimmed">
                     <p class="card-text">{{post.data}}</p>
@@ -23,8 +23,8 @@
             {% for users in users %}
                 {% if user.id != users.id %}
                 <div class="d-flex align-items-center gap-2 pt-1 hover-underline">
-                    <a href="/{{ users.username }}" class="rounded-circle">
-                        <img src="../static/profile_images/{{ users.profile_img }}" alt="profile" class="rounded-circle" style="width: 32px; height: 32px;"></img>
+                    <a href="/{{ users.username }}" class="rounded-circle overflow-hidden" style="width: 32px; height: 32px;">
+                        <img src="../static/profile_images/{{ users.profile_img }}" alt="profile" style="max-width: 100%;"></img>
                     </a>
                     <div class="flex-grow-1">
                         <a href="/{{ users.username }}" class="text-decoration-none text-black">{{ users.first_name }} {{ users.last_name }}</a>

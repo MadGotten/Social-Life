@@ -20,8 +20,8 @@
     <div class="d-flex position-relative h-100 w-lg-300" style="max-width: 360px; min-width: 250px; width: 100%">
         <div class="position-lg-fixed px-1 px-lg-0" style="width:inherit">
             <div class="d-flex align-items-end flex-row pb-3 gap-3">
-                <a href="/{{user.username}}" class="rounded-circle">
-                    <img src="../static/profile_images/{{user.profile_img}}" alt="profile" class="rounded-circle" style="width: 48px; height: 48px;"></img>
+                <a href="/{{user.username}}" class="rounded-circle overflow-hidden" style="width: 48px; height: 48px;">
+                    <img src="../static/profile_images/{{user.profile_img}}" alt="profile" style="max-width: 100%;"></img>
                 </a>
                 <div class="d-flex flex-column">
                     <h6 class="m-0"><a href="/{{user.username}}" class="text-decoration-none text-black">{{user.first_name}} {{user.last_name}}</a></h6>
@@ -34,7 +34,9 @@
                     {% for users in users %}
                         {% if user.id != users.id %}
                         <div class="d-flex align-items-center gap-2 pt-1 hover-underline">
-                            <a href ="/{{users.username}}" class="rounded-circle"><img src="../static/profile_images/{{users.profile_img}}" alt="profile" class="rounded-circle" style="width: 32px; height: 32px;"></img></a>
+                            <a href ="/{{users.username}}" class="rounded-circle overflow-hidden" style="width: 32px; height: 32px;">
+                                <img src="../static/profile_images/{{users.profile_img}}" alt="profile" style="max-width: 100%"></img>
+                            </a>
                             <div class="flex-grow-1"><a href ="/{{users.username}}" class="text-decoration-none text-black">{{users.first_name}} {{users.last_name}}</a></div>
                             {% set follow = {'status': 'Follow'} %}
                             {% for followed in user.followed %}
