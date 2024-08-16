@@ -40,22 +40,33 @@ def follow_user(username):
 def UploadProfileImage():
     if request.method == "POST":
         image = request.files["profileimage"]
-        if image:
-            if current_user.profile_img != "default.png":
-                try:
-                    os.remove(os.path.join(current_app.config['UPLOAD_PROFILE_FOLDER'], current_user.profile_img))  # Removing image from disk
-                except:
-                    pass
-            image_filename = secure_filename(image.filename)
-            image_name = str(uuid.uuid1()) + "_" + image_filename  # Genereting uuid for image
-            image.save(os.path.join(current_app.config['UPLOAD_PROFILE_FOLDER'], image_name))  # Saving image to disk
-            user = User.query.filter_by(id=current_user.id).first()
-            user.profile_img = image_name
-            db.session.commit()
-            flash("Profile picture changed!", category="success")
+        if not image:
+            flash("No image uploaded!", category="error")
+            return redirect(url_for("profile.open_profile", username=current_user.username))
+        
+        image_filename = secure_filename(image.filename)
+        file_ext = os.path.splitext(image_filename)[1].lower()
+        
+        if file_ext not in current_app.config['UPLOAD_EXTENSIONS']:
+            flash("Invalid image format!", category="error")
+            return redirect(url_for("profile.open_profile", username=current_user.username))
+        
+        if current_user.profile_img != "default.png":
+            old_path = os.path.join(current_app.config['UPLOAD_PROFILE_FOLDER'], current_user.profile_img)
+            if os.path.exists(old_path):
+                os.remove(old_path)
+
+
+        image_name = f"{uuid.uuid1()}_{image_filename}"
+        image_path = os.path.join(current_app.config['UPLOAD_PROFILE_FOLDER'], image_name)
+
+        image.save(image_path)
+        
+        current_user.profile_img = image_name
+        db.session.commit()
+        flash("Profile picture changed successfully!", category="success")
     return redirect(url_for("profile.open_profile", username=current_user.username))
-
-
+    
 # TODO: Implement better way of unchecking notifications
 @profile.route('/checkNotfications', methods=["POST"])
 @login_required

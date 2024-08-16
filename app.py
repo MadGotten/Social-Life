@@ -1,7 +1,8 @@
 from website import create_app, login_manager, db
-from flask import render_template, redirect, url_for, request
+from flask import render_template, redirect, url_for, request, flash
 from website.models import Post, User, Comment, Follow
 from flask_login import login_required, current_user
+from werkzeug.exceptions import RequestEntityTooLarge
 
 ROWS_PER_PAGE = 5
 
@@ -40,6 +41,11 @@ def page_not_found(e):
 @app.errorhandler(405)
 def method_not_allowed(e):
     return render_template("errors/405.html", user=current_user), 405
+
+@app.errorhandler(RequestEntityTooLarge)
+def handle_file_too_large(e):
+    flash("File is too large. Maximum size allowed is 2MB.", category="error")
+    return redirect(request.referrer)
 
 @login_manager.unauthorized_handler
 def unauthorized():
