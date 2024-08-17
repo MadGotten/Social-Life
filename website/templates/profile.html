@@ -5,7 +5,7 @@
         <form method="post" action="/UploadProfileImage" id="profileimageform" style="min-width: 80px; width: 150px;height: 150px;position:relative;" enctype="multipart/form-data">
             {{ csrf_form.hidden_tag() }}
             {% if profile.id == user.id %}
-                <label for="profileimage" class="rounded-circle overflow-hidden uploadpicture w-100 h-100" style="cursor:pointer;">
+                <label for="profileimageinput" class="rounded-circle overflow-hidden uploadpicture w-100 h-100" style="cursor:pointer;">
                     <i class="bi bi-cloud-arrow-up position-absolute top-50 start-50 translate-middle text-white fs-1 d-none" style="z-index:999"></i>
                     <input type="file" name="profileimage" onchange="this.form.submit()" id="profileimageinput" style="display: none"/>
                     <img src="../static/profile_images/{{profile.profile_img}}" alt="profile" style="max-width: 100%"></img>

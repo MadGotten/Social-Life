@@ -58,7 +58,7 @@
                     {% for comment in comments %}
                     <div class="d-flex flex-row gap-3 lh-sm">
                         <a href="/{{comment.user.username}}" class="rounded-circle overflow-hidden" style="width: 32px; height: 32px;">
-                            <img src="/static/profile_images/{{comment.user.profile_img}}" alt="profile" class="rounded-circle" style="max-width: 100%"></img>
+                            <img src="/static/profile_images/{{comment.user.profile_img}}" alt="profile" style="max-width: 100%"></img>
                         </a>
                         <div class="d-flex flex-column align-items-start gap-1 flex-grow-1">
                             <div>
@@ -117,7 +117,7 @@
                                 <input type="hidden" name="post_url" value="{{post.url}}">
                                 <textarea 
                                 type="text" 
-                                class="form-control border-0 rounded-0 shadow-none bg-mainbody w-100 pe-1" 
+                                class="form-control border-0 rounded-0 shadow-none bg-transparent w-100 pe-1" 
                                 id="autoresizing" 
                                 style="resize: none;line-height: 22px ;font-size: 96%;height: 20px;max-height: 90px" 
                                 name="comment" 
