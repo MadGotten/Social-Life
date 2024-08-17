@@ -32,6 +32,9 @@ class User(db.Model, UserMixin):
             follow = Follow(followed=user, follower=self)
             db.session.add(follow)
             db.session.commit()
+            notification = Notification(user_id=user.id, notification_type=3, entity_id=self.id)
+            db.session.add(notification)
+            db.session.commit()
             return True
         return False
 
@@ -47,10 +50,8 @@ class User(db.Model, UserMixin):
         followers = self.followers.with_entities(Follow.followed_id, Follow.follower_id).all()
         if followers:
             for followed in followers:
-                #notification_object = Notification_object(entity_type=1, entity_id=self.id)
                 notification = Notification(user_id=followed.follower_id, notification_type=1, entity_id=self.id)
                 db.session.add(notification)
-                #db.session.add(notification_object)
 
 
 # TODO: Implement notification creating on insert in tables Post
@@ -86,10 +87,6 @@ class Follow(db.Model):
     followed_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     date = db.Column(db.DateTime(timezone=True), default=func.now())
 
-
-@event.listens_for(Follow, 'after_insert')
-def create_notification_on_follow(mapper, connection, follow):
-    connection.execute(insert(Notification).values(user_id=follow.followed_id, notification_type=3, entity_id=follow.follower_id))
 
 
 # TODO: Implement built-in functions for adding new notifications
