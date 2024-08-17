@@ -34,7 +34,6 @@ def follow_user(username):
     flash('User does not exist', category="error")
 
 
-# TODO: Create exception error
 @profile.route('/UploadProfileImage', methods=["POST"])
 @login_required
 def UploadProfileImage():
@@ -66,7 +65,8 @@ def UploadProfileImage():
         db.session.commit()
         flash("Profile picture changed successfully!", category="success")
     return redirect(url_for("profile.open_profile", username=current_user.username))
-    
+
+
 # TODO: Implement better way of unchecking notifications
 @profile.route('/checkNotfications', methods=["POST"])
 @login_required
