@@ -29,7 +29,7 @@ def create_app():
         moment.init_app(app)
         csrf.init_app(app)
 
-        from .models import User, Post, Comment, Like, Follow, Notification, Notification_object
+        from .models import User, Post, Comment, Like, Follow, Notification
 
         from .posts import posts
         from .profile import profile

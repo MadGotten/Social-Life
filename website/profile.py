@@ -74,6 +74,6 @@ def checkNotfications():
     if request.method == "POST":
         notifications = Notification.query.filter(Notification.user_id == current_user.id).all()
         for notification in notifications:
-            notification.status = False
+            notification.read = True
         db.session.commit()
     return jsonify({'success': True}), 200, {'ContentType': 'application/json'}

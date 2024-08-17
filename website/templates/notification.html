@@ -2,67 +2,63 @@
     <li><h6 class="dropdown-header">Notifications</h6></li>
     {% set set_header = namespace(new=true, old=true) %}
     {% for notifications in user.notification|reverse %}
-        {% if notifications.status %}
+        {% if not notifications.read %}
             {% if set_header.new == true %}
                 <li><h6 class="dropdown-header">New</h6></li>
                 {% set set_header.new = false %}
             {% endif %}
-            {% for object in notifications.notification_object %}
-                {% if object.entity_type == 1 %}
+                {% if notifications.notification_type == 1 %}
                     <li>
-                        <a class="dropdown-item text-wrap" style="font-size:90%" href={{ url_for('profile.open_profile', username=object.entity.username) }}>
-                            User <b>{{object.entity.username}}</b> has added a new post
-                            <p class="text-secondary mb-0 mt-1 text-end" style="font-size:80%">{{moment(notifications.date).fromNow()}}</p>
+                        <a class="dropdown-item text-wrap" style="font-size:90%" href={{ url_for('profile.open_profile', username=notifications.entity.username) }}>
+                            User <b>{{notifications.entity.username}}</b> has added a new post
+                            <p class="text-secondary mb-0 mt-1 text-end" style="font-size:80%">{{moment(notifications.timestamp).fromNow()}}</p>
                         </a>
                     </li>
-                {% elif object.entity_type == 2 %}
+                {% elif notifications.notification_type == 2 %}
                     <li>
-                        <a class="dropdown-item text-wrap" style="font-size:90%">
-                            User <b>{{object.entity.username}}</b> has commented on your post
-                            <p class="text-secondary mb-0 mt-1 text-end" style="font-size:80%">{{moment(notifications.date).fromNow()}}</p>
+                        <a class="dropdown-item text-wrap" style="font-size:90%" href={{ url_for('profile.open_profile', username=notifications.entity.username) }}>
+                            User <b>{{notifications.entity.username}}</b> has commented on your post
+                            <p class="text-secondary mb-0 mt-1 text-end" style="font-size:80%">{{moment(notifications.timestamp).fromNow()}}</p>
                         </a>
                     </li>
-                {% elif object.entity_type == 3 %}
+                {% elif notifications.notification_type == 3 %}
                     <li>
-                        <a class="dropdown-item text-wrap" style="font-size:90%">
-                            User <b>{{object.entity.username}}</b> has followed you
-                            <p class="text-secondary mb-0 mt-1 text-end" style="font-size:80%">{{moment(notifications.date).fromNow()}}</p>
+                        <a class="dropdown-item text-wrap" style="font-size:90%" href={{ url_for('profile.open_profile', username=notifications.entity.username) }}>
+                            User <b>{{notifications.entity.username}}</b> has followed you
+                            <p class="text-secondary mb-0 mt-1 text-end" style="font-size:80%">{{moment(notifications.timestamp).fromNow()}}</p>
                         </a>
                     </li>
                 {% endif %}
-            {% endfor %}
         {% endif %}
     {% endfor %}
     {% for notifications in user.notification|reverse %}
-        {% if notifications.status == False %}
+        {% if notifications.read == True %}
             {% if set_header.old == true and set_header.new == false %}
                 <li><h6 class="dropdown-header">Older</h6></li>
                 {% set set_header.old = false %}
             {% endif %}
-            {% for object in notifications.notification_object %}
-                {% if object.entity_type == 1 %}
+                {% if notifications.notification_type == 1 %}
                     <li>
-                        <a class="dropdown-item text-wrap" style="font-size:90%" href={{ url_for('profile.open_profile', username=object.entity.username) }}>
-                            User <b>{{object.entity.username}}</b> has added a new post
-                            <p class="text-secondary mb-0 mt-1 text-end" style="font-size:80%">{{moment(notifications.date).fromNow()}}</p>
+                        <a class="dropdown-item text-wrap" style="font-size:90%" href={{ url_for('profile.open_profile', username=notifications.entity.username) }}>
+                            User <b>{{notifications.entity.username}}</b> has added a new post
+                            <p class="text-secondary mb-0 mt-1 text-end" style="font-size:80%">{{moment(notifications.timestamp).fromNow()}}</p>
                         </a>
                     </li>
-                {% elif object.entity_type == 2 %}
+                {% elif notifications.notification_type == 2 %}
                     <li>
-                        <a class="dropdown-item text-wrap" style="font-size:90%">
-                            User <b>{{object.entity.username}}</b> has commented on your post
-                            <p class="text-secondary mb-0 mt-1 text-end" style="font-size:80%">{{moment(notifications.date).fromNow()}}</p>
+                        <a class="dropdown-item text-wrap" style="font-size:90%" href={{ url_for('profile.open_profile', username=notifications.entity.username) }}>
+                            User <b>{{notifications.entity.username}}</b> has commented on your post
+                            <p class="text-secondary mb-0 mt-1 text-end" style="font-size:80%">{{moment(notifications.timestamp).fromNow()}}</p>
                         </a>
                     </li>
-                {% elif object.entity_type == 3 %}
+                {% elif notifications.notification_type == 3 %}
                     <li>
-                        <a class="dropdown-item text-wrap" style="font-size:90%">
-                            User <b>{{object.entity.username}}</b> has followed you
-                            <p class="text-secondary mb-0 mt-1 text-end" style="font-size:80%">{{moment(notifications.date).fromNow()}}</p>
+                        <a class="dropdown-item text-wrap" style="font-size:90%" href={{ url_for('profile.open_profile', username=notifications.entity.username) }}>
+                            User <b>{{notifications.entity.username}}</b> has followed you
+                            <p class="text-secondary mb-0 mt-1 text-end" style="font-size:80%">{{moment(notifications.timestamp).fromNow()}}</p>
                         </a>
                     </li>
                 {% endif %}
-            {% endfor %}
         {% endif %}
     {% endfor %}
 </ul>

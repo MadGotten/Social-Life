@@ -1,6 +1,6 @@
 from . import db
 from flask_login import UserMixin
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, insert
 from sqlalchemy import event
 from datetime import datetime, timezone, timedelta
 
@@ -22,7 +22,7 @@ class User(db.Model, UserMixin):
     followers = db.relationship('Follow', foreign_keys='Follow.followed_id',
                                 backref=db.backref('followed', lazy='joined'), lazy='dynamic',
                                 cascade='all, delete-orphan')
-    notification = db.relationship('Notification', backref='user', lazy=True)
+    notification = db.relationship('Notification', backref='user', foreign_keys="Notification.user_id", lazy=True)
 
     def is_following(self, user):
         return self.followed.filter_by(followed_id=user.id).first() is not None
@@ -47,10 +47,10 @@ class User(db.Model, UserMixin):
         followers = self.followers.with_entities(Follow.followed_id, Follow.follower_id).all()
         if followers:
             for followed in followers:
-                notification_object = Notification_object(entity_type=1, entity_id=self.id)
-                notification = Notification(user_id=followed.follower_id, notification_object=[notification_object])
+                #notification_object = Notification_object(entity_type=1, entity_id=self.id)
+                notification = Notification(user_id=followed.follower_id, notification_type=1, entity_id=self.id)
                 db.session.add(notification)
-                db.session.add(notification_object)
+                #db.session.add(notification_object)
 
 
 # TODO: Implement notification creating on insert in tables Post
@@ -89,34 +89,26 @@ class Follow(db.Model):
 
 @event.listens_for(Follow, 'after_insert')
 def create_notification_on_follow(mapper, connection, follow):
-    notification_object = Notification_object(entity_type=3, entity_id=follow.follower_id)
-    notification = Notification(user_id=follow.followed_id, notification_object=[notification_object])
-    db.session.add(notification)
-    db.session.add(notification_object)
+    connection.execute(insert(Notification).values(user_id=follow.followed_id, notification_type=3, entity_id=follow.follower_id))
 
 
 # TODO: Implement built-in functions for adding new notifications
 class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
-    status = db.Column(db.BOOLEAN, default=True)
-    notification_object = db.relationship('Notification_object', backref='notification', cascade='all, delete-orphan')
+    entity_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
+    notification_type = db.Column(db.Integer, nullable=False)
+    timestamp = db.Column(db.DateTime(timezone=True), default=func.now())
+    read = db.Column(db.Boolean, default=False)
+    entity = db.relationship('User', backref='entity', foreign_keys=entity_id)
 
     @staticmethod
     def delete_expired_notifications():
         expiration_date = datetime.now(timezone.utc) - timedelta(days=3)
-        expired_notifications = Notification.query.filter(Notification.date <= expiration_date).all()
+        expired_notifications = Notification.query.filter(Notification.timestamp <= expiration_date).all()
         for notification in expired_notifications:
             db.session.delete(notification)
         db.session.commit()
-
-
-class Notification_object(db.Model):
-    notification_id = db.Column(db.Integer, db.ForeignKey('notification.id', ondelete="CASCADE"), primary_key=True)
-    entity_type = db.Column(db.Integer, nullable=False)
-    entity_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
-    entity = db.relationship('User', backref='notification_object', foreign_keys=entity_id)
 
 # Entity type
 # 1 User B created a Post // User madgotten has added a new post <gray>data<gray>

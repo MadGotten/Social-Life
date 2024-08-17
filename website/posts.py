@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, abort
 from . import db
-from .models import Post, Comment, Like, Notification, Notification_object
+from .models import Post, Comment, Like, Notification
 import uuid as uuid
 from flask_login import login_required, current_user
 
