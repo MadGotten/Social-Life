@@ -8,15 +8,19 @@ import os
 
 profile = Blueprint('profile', __name__)
 
+POST_PER_PAGE = 4
 
 # TODO: Paginate users posts
 @profile.route('/<username>/', methods=["GET"])
 @login_required
 def open_profile(username):
+    page = request.args.get('page', type=int)
     user = User.query.filter_by(username=username).first()
     if user:
-        posts = Post.query.filter_by(user_id=user.id).all()
-        return render_template('profile.html', user=current_user, profile=user, posts=posts)
+        posts = Post.query.filter_by(user_id=user.id).paginate(page=page, per_page=POST_PER_PAGE)
+        if request.headers.get('HX-Request'):
+            return render_template('profile_post.html', profile=user, posts=posts, current_page=page)
+        return render_template('profile.html', user=current_user, profile=user, posts=posts, current_page=page)
     return abort(404)
 
 

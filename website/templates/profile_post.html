@@ -1,0 +1,22 @@
+{% for post in posts %}
+<a href={{ url_for('posts.open_post', post_url=post.url) }} class="text-decoration-none text-black">
+<div class="card d-flex profile-cards position-relative" style="width: 16rem;height: 14rem">
+    <div class="card-body hoverDimmed">
+    <p class="card-text">{{post.data}}</p>
+    </div>
+    <div class="hoverOptions position-absolute top-50 start-50 translate-middle d-flex flex-row gap-4 invisible">
+        <span><i class="bi bi-heart-fill" style="font-size: 95%"></i> {{post.likes|selectattr("comment_id", "none")|list|length}}</span>
+        <span><i class="bi bi-chat-fill"></i> {{post.comments|length}}</span>
+    </div>
+</div>
+</a>
+{% endfor %}
+{%- for page in posts.iter_pages() %}
+{% if page %}
+    {% if page != posts.page %}
+        {% if page == posts.next_num %}
+            <div class="position-absolute" style="bottom: 20%;" hx-get={{ url_for('profile.open_profile', username=profile.username ,page=page) }} id="load_more" hx-target="#load_more" hx-trigger="revealed" hx-swap="outerHTML"></div>
+        {% endif %}
+    {% endif %}
+{% endif%}
+{%- endfor %}
