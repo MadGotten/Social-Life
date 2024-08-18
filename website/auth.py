@@ -19,7 +19,8 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data.lower()).first()
         if user and check_password_hash(user.password, form.password.data):
-            login_user(user, remember=True) # Add ability to remember user or not
+            remember_me = request.form.get('remember_me', default=False, type=bool)
+            login_user(user, remember=remember_me)
             flash('Logged successfully!', category='success')
             return redirect(url_for('main'))
         else:
@@ -46,7 +47,7 @@ def signup():
         else:
             new_user = User(
                 email=form.email.data.lower(), 
-                password=generate_password_hash(form.password.data, method='sha256'), 
+                password=generate_password_hash(form.password.data), 
                 username=form.username.data.lower(),
                 first_name=form.firstname.data.capitalize(),
                 last_name=form.lastname.data.capitalize()

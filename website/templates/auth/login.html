@@ -12,7 +12,10 @@
                     {{render_field(field)}}            
                 {% endif %}
             {% endfor %}
-            <div class="row px-2 py-4">
+            <div class="d-flex align-items-center gap-2 p-2 py-1">
+                <input type="checkbox" name="remember_me" style="width: 16px; height: 16px">Remember me</input>
+            </div>
+            <div class="row px-2 py-3">
                 <div class="col">
                     <button type="submit" class="btn btn-primary w-100">Login</button>
                 </div>
