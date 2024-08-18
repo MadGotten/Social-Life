@@ -8,7 +8,7 @@ import os
 
 profile = Blueprint('profile', __name__)
 
-POST_PER_PAGE = 4
+POST_PER_PAGE = 9
 
 # TODO: Paginate users posts
 @profile.route('/<username>/', methods=["GET"])
@@ -22,6 +22,11 @@ def open_profile(username):
             return render_template('profile_post.html', profile=user, posts=posts, current_page=page)
         return render_template('profile.html', user=current_user, profile=user, posts=posts, current_page=page)
     return abort(404)
+
+@profile.route('/settings', methods=["GET"])
+@login_required
+def settings():
+    return render_template('settings.html', user=current_user)
 
 
 @profile.route('/follow_user/<username>/', methods=["POST"])

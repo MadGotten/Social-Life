@@ -21,7 +21,6 @@
                 <li><a class="dropdown-item rounded-3">Report</a></li>
                 <li><a class="dropdown-item rounded-3" onclick="copyClipboard('{{ url_for('posts.open_post', post_url=post.url, _external=True) }}')">Copy link</a></li>
                 {% if post.user_id == user.id %}
-                    <li><hr class="dropdown-divider my-1"></li>
                     <li><a class="dropdown-item dropdown-item-danger rounded-3" data-bs-toggle="modal" data-bs-target="#confirmDelete-{{ post.id }}">Delete</a></li>
                 {% endif %}
             </ul>
