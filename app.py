@@ -50,7 +50,3 @@ def handle_file_too_large(e):
 @login_manager.unauthorized_handler
 def unauthorized():
     return redirect(url_for('auth.login'))
-
-
-if __name__ == '__main__':
-    app.run(debug=True)

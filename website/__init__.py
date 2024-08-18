@@ -13,10 +13,6 @@ login_manager = LoginManager()
 csrf = CSRFProtect()
 
 
-
-# TODO: Delete unused functions
-# TODO: Implement more functionality for running dev or production
-# TODO: move variables to a separate config file
 def create_app():
     app = Flask(__name__)
     app.config.from_pyfile("../config.py")
@@ -53,8 +49,6 @@ def create_app():
         create_database(app)
 
         Notification.delete_expired_notifications()
-        #Follow.query.delete()
-        #db.session.commit()
         return app
 
 

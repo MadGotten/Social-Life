@@ -1,7 +1,12 @@
-DB_NAME = "database.db"
+import os
+from dotenv import load_dotenv
+load_dotenv(override=True)
 
-SECRET_KEY = 'jkj29USij290!js6*(4mn@9K2*$K'
-SQLALCHEMY_DATABASE_URI = f'sqlite:///{DB_NAME}'
+FLASK_ENV = os.getenv('FLASK_ENV')
+DEBUG = os.getenv('DEBUG')
+TESTING = os.getenv('TESTING')
+SECRET_KEY = os.getenv('SECRET_KEY')
+SQLALCHEMY_DATABASE_URI =  os.getenv('SQLALCHEMY_DATABASE_URI')
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 REMEMBER_COOKIE_SAMESITE = 'Lax'
 UPLOAD_PROFILE_FOLDER = 'website/static/profile_images'
