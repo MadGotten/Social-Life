@@ -27,11 +27,13 @@ def create_app():
 
         from .models import User, Post, Comment, Like, Follow, Notification
 
+        from app import main
         from .posts import posts
         from .profile import profile
         from .auth import auth
         from .errors import errors
 
+        app.register_blueprint(main, url_prefix='/')
         app.register_blueprint(posts, url_prefix='/')
         app.register_blueprint(profile, url_prefix='/')
         app.register_blueprint(auth, url_prefix='/')

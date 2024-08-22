@@ -20,7 +20,7 @@ def create_post():
             current_user.notify_followers()
             db.session.commit()
             flash('Post has been published!', category='success')
-            return redirect(url_for("main"))
+            return redirect(url_for("main.index"))
         else:
             flash("Email or password cannot be empty!", "error")
     return render_template('create_post.html', user=current_user)
@@ -100,7 +100,7 @@ def delete_post(id):
             db.session.commit()
             flash("Post was deleted", category="success")
 
-        return redirect(url_for("main"))
+        return redirect(url_for("main.index"))
     return abort(405)
 
 @posts.route('/delete_comment/<id>', methods=["POST"])

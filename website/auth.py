@@ -14,7 +14,7 @@ def login():
     form = LoginForm()
     if current_user.is_authenticated:
         flash('You are already logged in!', category='info')
-        return redirect(url_for('main'))
+        return redirect(url_for('main.index'))
     
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data.lower()).first()
@@ -22,7 +22,7 @@ def login():
             remember_me = request.form.get('remember_me', default=False, type=bool)
             login_user(user, remember=remember_me)
             flash('Logged successfully!', category='success')
-            return redirect(url_for('main'))
+            return redirect(url_for('main.index'))
         else:
             flash("Incorrect email or password, try again.", "error")
 
@@ -34,7 +34,7 @@ def signup():
     form = RegisterForm()
     if current_user.is_authenticated:
         flash('You are already logged in!', category='info')
-        return redirect(url_for('main'))
+        return redirect(url_for('main.index'))
     
     if form.validate_on_submit():
         user_email = User.query.filter_by(email=form.email.data.lower().lower()).first()
@@ -56,7 +56,7 @@ def signup():
             db.session.commit()
             login_user(new_user, remember=True)
             flash("Account created successfully!", category="success")
-            return redirect(url_for('main'))
+            return redirect(url_for('main.index'))
 
     return render_template("auth/sign_up.html", user=current_user, form=form)
 
