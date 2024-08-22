@@ -31,22 +31,3 @@ def search():
     posts = Post.query.filter(Post.data.contains(searchText, autoescape=True)).limit(3).all()
 
     return render_template("search.html", user=current_user, posts=posts, users=users)
-
-
-# TODO: add more error handlers
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template("errors/404.html", user=current_user), 404
-
-@app.errorhandler(405)
-def method_not_allowed(e):
-    return render_template("errors/405.html", user=current_user), 405
-
-@app.errorhandler(RequestEntityTooLarge)
-def handle_file_too_large(e):
-    flash("File is too large. Maximum size allowed is 2MB.", category="error")
-    return redirect(request.referrer)
-
-@login_manager.unauthorized_handler
-def unauthorized():
-    return redirect(url_for('auth.login'))
