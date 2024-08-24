@@ -23,7 +23,7 @@ def create_post():
             return redirect(url_for("main.index"))
         else:
             flash("Email or password cannot be empty!", "error")
-    return render_template('create_post.html', user=current_user)
+    return render_template('post/create.html', user=current_user)
 
 
 @posts.route('/create_comment/<post_id>', methods=["POST"])
@@ -47,7 +47,7 @@ def open_post(post_url):
     post = Post.query.filter_by(id=post_url).first()
     if post:
         comments = Comment.query.filter_by(post_id=post.id).all()
-        return render_template('open_post.html', user=current_user, post=post, comments=comments)
+        return render_template('post/detail.html', user=current_user, post=post, comments=comments)
     return abort(404)
 
 

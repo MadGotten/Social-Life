@@ -19,14 +19,14 @@ def open_profile(username):
     if user:
         posts = Post.query.filter_by(user_id=user.id).paginate(page=page, per_page=POST_PER_PAGE)
         if request.headers.get('HX-Request'):
-            return render_template('profile_post.html', profile=user, posts=posts, current_page=page)
-        return render_template('profile.html', user=current_user, profile=user, posts=posts, current_page=page)
+            return render_template('profile/posts.html', profile=user, posts=posts, current_page=page)
+        return render_template('profile/index.html', user=current_user, profile=user, posts=posts, current_page=page)
     return abort(404)
 
 @profile.route('/settings', methods=["GET"])
 @login_required
 def settings():
-    return render_template('settings.html', user=current_user)
+    return render_template('profile/settings.html', user=current_user)
 
 
 @profile.route('/follow_user/<username>/', methods=["POST"])

@@ -18,7 +18,7 @@ def index():
     users = User.query.filter(User.id != current_user.id).limit(4).all()
     
     if request.headers.get('HX-Request'):
-        return render_template("post.html", user=current_user, posts=posts, current_page=page)
+        return render_template("post/index.html", user=current_user, posts=posts, current_page=page)
     
     return render_template("main.html", user=current_user, posts=posts, users=users, current_page=page)
 
