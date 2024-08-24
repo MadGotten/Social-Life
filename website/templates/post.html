@@ -19,7 +19,7 @@
             </button>
             <ul class="dropdown-menu p-2 gap-1">
                 <li><a class="dropdown-item rounded-3">Report</a></li>
-                <li><a class="dropdown-item rounded-3" onclick="copyClipboard('{{ url_for('posts.open_post', post_url=post.url, _external=True) }}')">Copy link</a></li>
+                <li><a class="dropdown-item rounded-3" onclick="copyClipboard('{{ url_for('posts.open_post', post_url=post.id, _external=True) }}')">Copy link</a></li>
                 {% if post.user_id == user.id %}
                     <li><a class="dropdown-item dropdown-item-danger rounded-3" data-bs-toggle="modal" data-bs-target="#confirmDelete-{{ post.id }}">Delete</a></li>
                 {% endif %}
@@ -90,7 +90,7 @@
                 </a>
             </div>
             <span id="likes-post-count-{{post.id}}" class="fw-medium mb-2">Post likes: {{post.likes|selectattr("comment_id", "none")|list|length}}</span>
-                <a href={{ url_for('posts.open_post', post_url=post.url) }} class="text-decoration-none text-muted" >Show all comments: {{post.comments|length}}</a>
+                <a href={{ url_for('posts.open_post', post_url=post.id) }} class="text-decoration-none text-muted" >Show all comments: {{post.comments|length}}</a>
         </div>
     </div>
     <p class="card-text px-3"><small class="text-muted">{{moment(post.date).fromNow()}}</small></p>
@@ -103,7 +103,7 @@
                 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z"/>
             </svg>
             <div class="w-100 custom-control-input-bg">
-                <input type="hidden" name="post_url" value="{{post.url}}">
+                <input type="hidden" name="post_url" value="{{post.id}}">
                 <textarea 
                     type="text" 
                     class="form-control border-0 rounded-0 shadow-none bg-transparent w-100 pe-1" 

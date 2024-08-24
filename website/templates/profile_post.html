@@ -1,5 +1,5 @@
 {% for post in posts %}
-<a href={{ url_for('posts.open_post', post_url=post.url) }} class="text-decoration-none text-black">
+<a href={{ url_for('posts.open_post', post_url=post.id) }} class="text-decoration-none text-black">
 <div class="card d-flex profile-cards position-relative" style="width: 16rem;height: 14rem">
     <div class="card-body hoverDimmed">
     <p class="card-text">{{post.data}}</p>

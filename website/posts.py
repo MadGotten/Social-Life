@@ -15,7 +15,7 @@ def create_post():
     if request.method == "POST":
         text = request.form['text']
         if 0 < len(text) <= 255:
-            new_post = Post(data=text, url=str(uuid.uuid1().hex[:12]), user_id=current_user.id)
+            new_post = Post(data=text, user_id=current_user.id)
             db.session.add(new_post)
             current_user.notify_followers()
             db.session.commit()
@@ -44,7 +44,7 @@ def create_comment(post_id):
 @posts.route('/p/<post_url>/', methods=["GET"])
 @login_required
 def open_post(post_url):
-    post = Post.query.filter_by(url=post_url).first()
+    post = Post.query.filter_by(id=post_url).first()
     if post:
         comments = Comment.query.filter_by(post_id=post.id).all()
         return render_template('open_post.html', user=current_user, post=post, comments=comments)

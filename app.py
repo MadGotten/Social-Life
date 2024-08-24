@@ -14,7 +14,7 @@ ROWS_PER_PAGE = 5
 @login_required
 def index():
     page = request.args.get('page', type=int)
-    posts = Post.query.order_by(Post.id.desc()).paginate(page=page, per_page=ROWS_PER_PAGE)
+    posts = Post.query.order_by(Post.date.desc()).paginate(page=page, per_page=ROWS_PER_PAGE)
     users = User.query.filter(User.id != current_user.id).limit(4).all()
     
     if request.headers.get('HX-Request'):

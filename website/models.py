@@ -1,7 +1,9 @@
 from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
+from sqlalchemy_utils import UUIDType
 from datetime import datetime, timezone, timedelta
+import uuid as uuid
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -66,10 +68,9 @@ class User(db.Model, UserMixin):
 
 # TODO: Implement notification creating on insert in tables Post
 class Post(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(UUIDType(), primary_key=True, default=uuid.uuid4)
     data = db.Column(db.String(255))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
-    url = db.Column(db.String(12), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
     comments = db.relationship('Comment', backref='post', cascade="all, delete-orphan")
     likes = db.relationship('Like', backref='post', cascade="all, delete-orphan")
@@ -79,7 +80,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.String(255))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
-    post_id = db.Column(db.Integer, db.ForeignKey('post.id', ondelete="CASCADE"), nullable=False)
+    post_id = db.Column(UUIDType(), db.ForeignKey('post.id', ondelete="CASCADE"), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
     likes = db.relationship('Like', backref='comment', cascade="all, delete-orphan")
 
@@ -88,7 +89,7 @@ class Like(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
-    post_id = db.Column(db.Integer, db.ForeignKey('post.id', ondelete="CASCADE"), nullable=False)
+    post_id = db.Column(UUIDType(), db.ForeignKey('post.id', ondelete="CASCADE"), nullable=False)
     comment_id = db.Column(db.Integer, db.ForeignKey('comment.id', ondelete="CASCADE"))
 
 
