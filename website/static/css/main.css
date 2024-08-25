@@ -5,6 +5,7 @@ body {
 }
 body {
     padding-top: 88px;
+    font-family: 'Poppins', sans-serif !important;
 }
 .custom-control-input-bg > textarea:focus{
     background-color: #F5F5F5 !important;

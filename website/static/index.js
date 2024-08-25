@@ -68,7 +68,6 @@ function likeComment(comment_id){
 function likePost(post_id){
     const likeCount = document.getElementById(`likes-post-count-${post_id}`);
     const likeButton = document.getElementById(`like-post-button-${post_id}`);
-    console.log(csrfToken)
 
     fetch(`/like_post/${post_id}/`,{
         method: 'POST',     
