@@ -25,6 +25,7 @@ class User(db.Model, UserMixin):
                                 backref=db.backref('followed', lazy='joined'), lazy='dynamic',
                                 cascade='all, delete-orphan')
     notification = db.relationship('Notification', backref='user', foreign_keys="Notification.user_id", lazy=True)
+    privacy_level = db.Column(db.String(10), default='public')
     
     @property
     def password(self):
@@ -64,6 +65,11 @@ class User(db.Model, UserMixin):
             for followed in followers:
                 notification = Notification(user_id=followed.follower_id, notification_type=1, entity_id=self.id)
                 db.session.add(notification)
+                
+    def can_view_profile(self, user):
+        if not self.privacy_level == 'private':
+            return True
+        return user == self or user.is_following(self)
 
 
 # TODO: Implement notification creating on insert in tables Post

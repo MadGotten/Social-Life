@@ -1,7 +1,11 @@
-{% macro render_field(field) %}
+{% macro render_field(field, show_label=False) %}
 <div class="row p-2 py-1">
-    <div class="col">
-    {{ field.label(class_="visually-hidden") }}
+    <div class="col d-flex flex-column gap-2">
+        {% if show_label %}
+            {{ field.label() }}
+        {% else %}
+            {{ field.label(class_="visually-hidden") }}
+        {% endif %}
     {{ field(class_="form-control " + ("border-danger" if field.errors else "")) }}
 
     {% if field.errors %}

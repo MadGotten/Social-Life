@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import EmailField, PasswordField, StringField
-from wtforms.validators import DataRequired, Email, EqualTo, Length, Regexp
+from wtforms import EmailField, PasswordField, StringField, SelectField
+from wtforms.validators import DataRequired, Email, EqualTo, Length, Regexp, Optional
 
 class LoginForm(FlaskForm):
     email = EmailField('Email adress', validators=[DataRequired(), Email()], render_kw={"placeholder": "Email Address"})
@@ -15,6 +15,12 @@ class RegisterForm(FlaskForm):
     firstname = StringField('First name', validators=[DataRequired(), Length(min=2, max=100, message="First name must be greater than 2 characters")], render_kw={"placeholder": "First Name"})
     lastname = StringField('Last name', validators=[DataRequired(), Length(min=2, max=100, message="Last name must be greater than 2 characters")], render_kw={"placeholder": "Last Name"})
 
+
+class UpdateSettingsForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('New Password', validators=[Optional(), Length(min=8, message="Password must be greater than 8 characters"), Regexp( r'^(?=.*\d)(?=.*[\W_]).+$',  message="Password must contain at least one number and one special character") ,EqualTo('password2', message='Passwords must match')])
+    password2 = PasswordField('Password (Confirm)')
+    privacy_level = SelectField('Privacy Level', choices=[('public', 'Public'), ('private', 'Private')], validators=[DataRequired()])
 
 class CSRFForm(FlaskForm):
     pass

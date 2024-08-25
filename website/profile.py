@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, flash, abort, current_app
 from flask_login import login_required, current_user
 from . import db
 from .models import User, Post, Follow, Notification
+from .forms import UpdateSettingsForm
 from werkzeug.utils import secure_filename
 import uuid as uuid
 import os
@@ -17,16 +18,38 @@ def open_profile(username):
     page = request.args.get('page', type=int)
     user = User.query.filter_by(username=username).first()
     if user:
-        posts = Post.query.filter_by(user_id=user.id).paginate(page=page, per_page=POST_PER_PAGE)
+        if user.can_view_profile(current_user):
+            posts = Post.query.filter_by(user_id=user.id).paginate(page=page, per_page=POST_PER_PAGE)
+        else:
+            posts = None
         if request.headers.get('HX-Request'):
             return render_template('profile/posts.html', profile=user, posts=posts, current_page=page)
         return render_template('profile/index.html', user=current_user, profile=user, posts=posts, current_page=page)
     return abort(404)
 
-@profile.route('/settings', methods=["GET"])
+@profile.route('/settings', methods=["GET", "POST"])
 @login_required
 def settings():
-    return render_template('profile/settings.html', user=current_user)
+    form = UpdateSettingsForm(obj=current_user)
+    if form.validate_on_submit():
+        if form.email.data != current_user.email:
+            if User.query.filter_by(email=form.email.data).first():
+                flash('Email already in use.', category='error')
+            else:
+                current_user.email = form.email.data
+                flash('Email updated successfully!', category='success')
+
+        if form.password.data:
+            current_user.password = form.password.data
+            flash('Password updated successfully!', category='success')
+        
+        if form.privacy_level.data != current_user.privacy_level:
+            current_user.privacy_level = form.privacy_level.data
+            flash('Privacy level updated successfully!', category='success')
+        db.session.commit()
+        return redirect(url_for('profile.settings'))
+    
+    return render_template('profile/settings.html', user=current_user, form=form)
 
 
 @profile.route('/follow_user/<username>/', methods=["POST"])

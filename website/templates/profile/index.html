@@ -11,7 +11,9 @@
                     <img src="../static/profile_images/{{profile.profile_img}}" alt="profile" style="max-width: 100%"></img>
                 </label>
             {% else %}
-                <img src="../static/profile_images/{{profile.profile_img}}" alt="profile" class="rounded-circle w-100 h-100"></img>
+                <div class="rounded-circle overflow-hidden w-100 h-100">
+                    <img src="../static/profile_images/{{profile.profile_img}}" alt="profile" style="max-width: 100%"></img>
+                </div>
             {% endif %}
         </form>
         <div class="d-flex flex-column ms-1 ms-sm-2 p-sm-2 ms-md-4 p-md-3">
@@ -54,7 +56,11 @@
         {% endif %}
     </div>
     <div class="d-flex flex-wrap justify-content-center gap-3 position-relative">
-        {% include 'profile/posts.html' %}
+        {% if posts %}
+            {% include 'profile/posts.html' %}
+        {% else %}
+            <h4>This profile is private!</h4>
+        {% endif%}
     </div>
 </section>
 {% endblock %}
