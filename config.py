@@ -2,14 +2,36 @@ import os
 from dotenv import load_dotenv
 load_dotenv(override=True)
 
-FLASK_ENV = os.getenv('FLASK_ENV')
-DEBUG = os.getenv('DEBUG')
-TESTING = os.getenv('TESTING')
-SECRET_KEY = os.getenv('SECRET_KEY')
-SQLALCHEMY_DATABASE_URI =  os.getenv('SQLALCHEMY_DATABASE_URI')
-SQLALCHEMY_TRACK_MODIFICATIONS = False
-SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE')
-REMEMBER_COOKIE_SAMESITE = 'Lax'
-UPLOAD_PROFILE_FOLDER = 'website/static/profile_images'
-MAX_CONTENT_LENGTH = 2 * 1024 * 1024
-UPLOAD_EXTENSIONS = ['.jpg', '.png']
+
+class Config(object):
+    SECRET_KEY = os.getenv('SECRET_KEY')
+    DEBUG = False
+    TESTING = False
+    REMEMBER_COOKIE_SAMESITE = 'Lax'
+    SESSION_COOKIE_SECURE = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///database.db'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    MAX_CONTENT_LENGTH = 2 * 1024 * 1024
+    UPLOAD_EXTENSIONS = ['.jpg', '.png']
+    UPLOAD_PROFILE_FOLDER = 'website/static/profile_images'
+    
+    MAIL_SERVER= os.getenv('MAIL_SERVER')
+    MAIL_PORT = os.getenv('MAIL_PORT')
+    MAIL_USERNAME = os.getenv('MAIL_USERNAME')
+    MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
+    MAIL_USE_TLS = True
+    MAIL_USE_SSL = False
+
+class ProductionConfig(Config):
+    FLASK_ENV = 'production'
+    
+
+class DevelopmentConfig(Config):
+    FLASK_ENV = 'development'
+    DEBUG = True
+    SESSION_COOKIE_SECURE = False
+
+class TestingConfig(Config):
+    FLASK_ENV = 'development'
+    TESTING = True
+    SESSION_COOKIE_SECURE = False

@@ -7,15 +7,23 @@ import uuid as uuid
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-# TODO: Do some cleanup with database
-class User(db.Model, UserMixin):
+class TimestampMixin():
+    created_at = db.Column(db.DateTime(), nullable=False, default=datetime.now)
+    updated_at = db.Column(db.DateTime(), nullable=False, default=datetime.now, onupdate=datetime.now)
+
+
+class User(db.Model, UserMixin, TimestampMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), nullable=False, unique=True)
     username = db.Column(db.String(30), nullable=False, unique=True)
-    _password = db.Column(db.String(150), nullable=False)
+    _password = db.Column(db.String(170), nullable=False)
     first_name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
+    is_admin = db.Column(db.Boolean(), default=False)
     profile_img = db.Column(db.String(), default="default.png")
+    is_confirmed = db.Column(db.Boolean(), nullable=False, default=False)
+    confirmed_on = db.Column(db.DateTime(), nullable=True)
+    privacy_level = db.Column(db.String(10), default='public')
     posts = db.relationship('Post', backref='user', passive_deletes=True)
     comments = db.relationship('Comment', backref='user', cascade="all, delete-orphan")
     followed = db.relationship('Follow', foreign_keys='Follow.follower_id',
@@ -25,7 +33,6 @@ class User(db.Model, UserMixin):
                                 backref=db.backref('followed', lazy='joined'), lazy='dynamic',
                                 cascade='all, delete-orphan')
     notification = db.relationship('Notification', backref='user', foreign_keys="Notification.user_id", lazy=True)
-    privacy_level = db.Column(db.String(10), default='public')
     
     @property
     def password(self):
