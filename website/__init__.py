@@ -1,6 +1,5 @@
 from flask import Flask, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from os import path
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_moment import Moment

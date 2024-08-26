@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, flash, abort, current_app, redirect, jsonify, url_for
 from flask_login import login_required, current_user
-from . import db
-from .models import User, Post, Follow, Notification
+from website.utils.decorators import verified_account
+from website import db
+from .models import User, Post, Notification
 from .forms import UpdateSettingsForm
 from werkzeug.utils import secure_filename
 import uuid as uuid
@@ -14,6 +15,7 @@ POST_PER_PAGE = 9
 # TODO: Paginate users posts
 @profile.route('/<username>/', methods=["GET"])
 @login_required
+@verified_account
 def open_profile(username):
     page = request.args.get('page', type=int)
     user = User.query.filter_by(username=username).first()
@@ -29,6 +31,7 @@ def open_profile(username):
 
 @profile.route('/settings', methods=["GET", "POST"])
 @login_required
+@verified_account
 def settings():
     form = UpdateSettingsForm(obj=current_user)
     if form.validate_on_submit():
@@ -54,6 +57,7 @@ def settings():
 
 @profile.route('/follow_user/<username>/', methods=["POST"])
 @login_required
+@verified_account
 def follow_user(username):
     user = User.query.filter_by(username=username).first()
     if user:
@@ -68,6 +72,7 @@ def follow_user(username):
 
 @profile.route('/UploadProfileImage', methods=["POST"])
 @login_required
+@verified_account
 def UploadProfileImage():
     if request.method == "POST":
         image = request.files["profileimage"]
@@ -102,6 +107,7 @@ def UploadProfileImage():
 # TODO: Implement better way of unchecking notifications
 @profile.route('/checkNotfications', methods=["POST"])
 @login_required
+@verified_account
 def checkNotfications():
     if request.method == "POST":
         notifications = Notification.query.filter(Notification.user_id == current_user.id).all()

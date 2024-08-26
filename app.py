@@ -1,8 +1,8 @@
-from website import create_app, login_manager, db
-from flask import render_template, redirect, url_for, request, flash, Blueprint
-from website.models import Post, User, Comment, Follow
+from website import create_app
+from flask import render_template, request, Blueprint
+from website.models import Post, User
 from flask_login import login_required, current_user
-from werkzeug.exceptions import RequestEntityTooLarge
+from website.utils.decorators import verified_account
 
 main = Blueprint('main', __name__)
 
@@ -12,6 +12,7 @@ ROWS_PER_PAGE = 5
 # TODO: add algorithm for displaying posts based on user followers, create date and others
 @main.route('/')
 @login_required
+@verified_account
 def index():
     page = request.args.get('page', type=int)
     posts = Post.query.order_by(Post.date.desc()).paginate(page=page, per_page=ROWS_PER_PAGE)
@@ -25,6 +26,7 @@ def index():
 
 @main.route('/search', methods=["GET"])
 @login_required
+@verified_account
 def search():
     searchText = request.args.get('search')
     users = User.query.filter(User.username.contains(searchText, autoescape=True)).limit(5).all()

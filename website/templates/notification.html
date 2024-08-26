@@ -1,7 +1,7 @@
 <ul class="dropdown-menu dropdown-menu-end overflow-x-hidden overflow-y-auto" style="max-height: 80dvh; width: 220px">
     <li><h6 class="dropdown-header">Notifications</h6></li>
     {% set set_header = namespace(new=true, old=true) %}
-    {% for notifications in user.notification|reverse %}
+    {% for notifications in current_user.notification|reverse %}
         {% if not notifications.read %}
             {% if set_header.new == true %}
                 <li><h6 class="dropdown-header">New</h6></li>
@@ -31,7 +31,7 @@
                 {% endif %}
         {% endif %}
     {% endfor %}
-    {% for notifications in user.notification|reverse %}
+    {% for notifications in current_user.notification|reverse %}
         {% if notifications.read == True %}
             {% if set_header.old == true and set_header.new == false %}
                 <li><h6 class="dropdown-header">Older</h6></li>

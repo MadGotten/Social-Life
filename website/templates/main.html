@@ -34,7 +34,7 @@
                     {% for users in users %}
                         {% if user.id != users.id %}
                         <div class="d-flex align-items-center gap-2 pt-1 hover-underline">
-                            <a href ="/{{users.username}}" class="rounded-circle overflow-hidden" style="width: 32px; height: 32px;">
+                            <a href ="/{{users.username}}" class="rounded-circle overflow-hidden flex-shrink-0" style="width: 32px; height: 32px;">
                                 <img src="../static/profile_images/{{users.profile_img}}" alt="profile" style="max-width: 100%"></img>
                             </a>
                             <div class="flex-grow-1"><a href ="/{{users.username}}" class="text-decoration-none text-black">{{users.first_name}} {{users.last_name}}</a></div>

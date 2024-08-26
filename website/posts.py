@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, abort
-from . import db
-from .models import Post, Comment, Like, Notification
+from .models import Post, Comment, Like
 import uuid as uuid
 from flask_login import login_required, current_user
+from website.utils.decorators import verified_account
+from website import db
 
 posts = Blueprint('posts', __name__)
 
@@ -11,6 +12,7 @@ posts = Blueprint('posts', __name__)
 # TODO: change response codes returned by server to be correct
 @posts.route('/create_post', methods=["POST", "GET"])
 @login_required
+@verified_account
 def create_post():
     if request.method == "POST":
         text = request.form['text']
@@ -28,6 +30,7 @@ def create_post():
 
 @posts.route('/create_comment/<post_id>', methods=["POST"])
 @login_required
+@verified_account
 def create_comment(post_id):
     if request.method == "POST":
         comment = request.form["comment"]
@@ -43,6 +46,7 @@ def create_comment(post_id):
 
 @posts.route('/p/<post_url>/', methods=["GET"])
 @login_required
+@verified_account
 def open_post(post_url):
     post = Post.query.filter_by(id=post_url).first()
     if post:
@@ -53,6 +57,7 @@ def open_post(post_url):
 
 @posts.route('/like_post/<post_id>/', methods=["POST"])
 @login_required
+@verified_account
 def like_post(post_id):
     post = Post.query.filter_by(id=post_id).first()
     like = Like.query.filter_by(user_id=current_user.id, post_id=post_id).first()
@@ -72,6 +77,7 @@ def like_post(post_id):
 
 @posts.route('/like_comment/<comment_id>/', methods=["POST"])
 @login_required
+@verified_account
 def like_comment(comment_id):
     comment = Comment.query.filter_by(id=comment_id).first()
     like = Like.query.filter_by(user_id=current_user.id, comment_id=comment_id).first()
@@ -92,6 +98,7 @@ def like_comment(comment_id):
 # TODO: add function for deleting comments
 @posts.route('/delete_post/<id>', methods=["POST"])
 @login_required
+@verified_account
 def delete_post(id):
     post = Post.query.get(id)
     if post:
@@ -105,6 +112,7 @@ def delete_post(id):
 
 @posts.route('/delete_comment/<id>', methods=["POST"])
 @login_required
+@verified_account
 def delete_comment(id):
     comment = Comment.query.get(id)
     if comment:
