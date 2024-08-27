@@ -4,6 +4,7 @@ from website import db
 from getpass import getpass
 from datetime import datetime
 
+
 @current_app.cli.command("create_admin")
 def create_admin():
     email = input("Enter email address: ")
