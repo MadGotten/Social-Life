@@ -1,3 +1,6 @@
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Flask](https://img.shields.io/badge/Flask-000000?style=flat&logo=flask&logoColor=white)](https://github.com/pallets/flask)
+
 # Social Life
 
 Social Life is social media platform for connecting and sharing with friends. With Social Life, you can engage with a community, whether it's by posting or commenting on friend's posts. You can also discover new posts provided by other people around the world.
@@ -23,7 +26,7 @@ Clone the project
 Go to the project directory
 
 ```bash
-  cd my-project
+  cd Social-Life
 ```
 
 Create virtual venv and start it
@@ -48,7 +51,7 @@ Create new database
 Start the server
 
 ```bash
-  flask --app app run
+  flask --app website run
 ```
 
 
